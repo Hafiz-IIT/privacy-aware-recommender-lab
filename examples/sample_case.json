@@ -1,0 +1,27 @@
+{
+  "preferences": [
+    "ai",
+    "systems"
+  ],
+  "min_cohort_support": 5,
+  "items": [
+    {
+      "id": "A",
+      "features": [
+        "ai",
+        "systems"
+      ],
+      "support": 20
+    },
+    {
+      "id": "rare",
+      "features": [
+        "ai"
+      ],
+      "support": 2
+    }
+  ],
+  "expected_visible": [
+    "A"
+  ]
+}
