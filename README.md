@@ -41,3 +41,7 @@ Tests verify preference-driven ranking, cohort suppression and non-inference beh
 
 ## License
 MIT.
+
+## Extended implementation
+
+- `consent_ledger.py` records preference opt-in/revocation and feeds only the current consent snapshot into recommendation.
