@@ -1,16 +1,15 @@
 # Privacy-Aware Recommender Lab
 
-> **Recommend only from explicit opt-in preferences and suppress low-support signals instead of inferring hidden interests.**
+> Recommendation lab constrained to explicitly opted-in preferences and minimum cohort support to reduce hidden inference risks.
 
-Personalization can quietly become inference about information a user never chose to provide. This repository explores a deliberately constrained recommendation baseline using only opt-in preferences plus a minimum cohort-support threshold.
+## Status
+**Reproducible prototype** with executable code, tests, CI, architecture, evaluation and roadmap documentation.
 
-## Implemented
-- item feature representation
-- explicit opt-in preference set
-- content-overlap scoring
-- minimum cohort-support gate
-- deterministic ranking
-- no hidden-preference inference when preference set is empty
+## Problem
+Recommendation systems can infer sensitive interests from opaque signals. This prototype deliberately restricts ranking to explicit opt-in preferences and suppresses low-support items.
+
+## Architecture
+Opted-in user preferences + item features + cohort support → privacy filter → overlap score → deterministic ranking.
 
 ## Run
 ```bash
@@ -18,23 +17,27 @@ python -m unittest discover -s tests -v
 python privacy_aware_recommender_lab.py
 ```
 
-## Repository map
-- `privacy_aware_recommender_lab.py` — implementation
-- `tests/` — tests
-- `examples/` — example input
-- `docs/architecture.md` — architecture
-- `docs/research-agenda.md` — experiments + research lineage
-- `STATUS.md` — claims boundary
-- `CITATION.cff` — citation
-
-## Pipeline
-**opt-in preferences → cohort-support filter → feature overlap → score → deterministic ranking**
+## Implemented
+- Explicit preference set
+- Item feature sets
+- Minimum cohort-support threshold
+- Content-overlap scoring
+- Deterministic top-k ranking
+- Tests and CI
 
 ## Research lineage
-This links the Personal AI/Life OS work with the older adaptive-recommendation, privacy-preserving architecture, user-behavior, and ethical consumer-AI research directions.
+- *Adaptive Recommendation Frameworks Using Hybrid Reinforcement Learning*
+- *Privacy-Preserving Architectures for Intelligent Consumer Applications*
+- *User Behavior Modeling with Adaptive Feedback Loops*
 
-## Evaluation direction
-Compare utility and exposure under different minimum-support thresholds and preference sparsity. Future work can introduce formal privacy mechanisms without relabeling this simple gate as differential privacy.
+## Evaluation
+Tests verify preference-driven ranking, cohort suppression and non-inference behavior when no preferences are provided.
 
-## Maturity
-**Research prototype.** This is not differential privacy, federated learning, k-anonymity certification, or a production recommender. The privacy behavior is a design constraint, not a formal guarantee.
+## Limitations
+- Content-based toy model
+- No formal differential privacy
+- No contextual bandit/RL yet
+- No production user data
+
+## License
+MIT.
