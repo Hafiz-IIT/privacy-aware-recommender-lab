@@ -1,47 +1,49 @@
 # Privacy-Aware Recommender Lab
 
-> Recommendation lab constrained to explicitly opted-in preferences and minimum cohort support to reduce hidden inference risks.
+<p align="center"><strong>Recommendation With Explicit Consent Boundaries</strong><br/><sub>Rank only from opted-in preferences and suppress weak-support signals.</sub></p>
 
-## Status
-**Reproducible prototype** with executable code, tests, CI, architecture, evaluation and roadmap documentation.
+<p align="center"><img src="https://img.shields.io/badge/status-reproducible%20prototype-blue" alt="Prototype"/> <img src="https://img.shields.io/badge/focus-consent%20%2B%20privacy-purple" alt="Privacy"/></p>
 
-## Problem
-Recommendation systems can infer sensitive interests from opaque signals. This prototype deliberately restricts ranking to explicit opt-in preferences and suppresses low-support items.
+## Question
 
-## Architecture
-Opted-in user preferences + item features + cohort support → privacy filter → overlap score → deterministic ranking.
+**Can a recommender be designed so that personalization depends on explicit user consent rather than hidden inference?**
 
-## Run
-```bash
-python -m unittest discover -s tests -v
-python privacy_aware_recommender_lab.py
+```
+Opted-in preferences
+        +
+Item features
+        +
+Cohort support
+        ↓
+Privacy filter
+        ↓
+Overlap score
+        ↓
+Deterministic ranking
 ```
 
+## Try it
+
+```bash
+python privacy_aware_recommender_lab.py
+python -m unittest discover -s tests -v
+```
+
+`consent_ledger.py` records opt-in/revocation events and feeds only the current consent snapshot into recommendation.
+
 ## Implemented
-- Explicit preference set
-- Item feature sets
-- Minimum cohort-support threshold
-- Content-overlap scoring
-- Deterministic top-k ranking
-- Tests and CI
 
-## Research lineage
-- *Adaptive Recommendation Frameworks Using Hybrid Reinforcement Learning*
-- *Privacy-Preserving Architectures for Intelligent Consumer Applications*
-- *User Behavior Modeling with Adaptive Feedback Loops*
+- explicit preference set
+- minimum cohort support
+- content-overlap scoring
+- deterministic top-k ranking
+- consent ledger
+- revocation
+- audit events
+- deterministic CI
 
-## Evaluation
-Tests verify preference-driven ranking, cohort suppression and non-inference behavior when no preferences are provided.
+## Boundary
 
-## Limitations
-- Content-based toy model
-- No formal differential privacy
-- No contextual bandit/RL yet
-- No production user data
+This is a controlled recommendation prototype, not a privacy certification or production recommender.
 
-## License
-MIT.
-
-## Extended implementation
-
-- `consent_ledger.py` records preference opt-in/revocation and feeds only the current consent snapshot into recommendation.
+Related: [Predictive Intelligence Platform](https://github.com/Hafiz-IIT/predictive-intelligence-platform) · [Memory Governor](https://github.com/Hafiz-IIT/memory-governor)
