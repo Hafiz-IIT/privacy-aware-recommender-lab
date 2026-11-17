@@ -20,6 +20,10 @@ class PrivacyAwareRecommenderTests(unittest.TestCase):
         result = recommend(items, opted_in_preferences=set())
         self.assertEqual(result, [("A", 0.0), ("B", 0.0)])
 
+    def test_preferences_and_item_features_are_casefolded(self):
+        items = [Item("A", frozenset({"AI", "Systems"}), 10)]
+        self.assertEqual(recommend(items, opted_in_preferences={"ai"})[0][0], "A")
+
     def test_invalid_support_and_result_limits_are_rejected(self):
         with self.assertRaises(ValueError):
             Item("bad", frozenset({"ai"}), -1)
