@@ -20,6 +20,14 @@ class PrivacyAwareRecommenderTests(unittest.TestCase):
         result = recommend(items, opted_in_preferences=set())
         self.assertEqual(result, [("A", 0.0), ("B", 0.0)])
 
+    def test_invalid_support_and_result_limits_are_rejected(self):
+        with self.assertRaises(ValueError):
+            Item("bad", frozenset({"ai"}), -1)
+        with self.assertRaises(ValueError):
+            recommend([], opted_in_preferences=set(), top_k=0)
+        with self.assertRaises(ValueError):
+            recommend([], opted_in_preferences=set(), min_cohort_support=0)
+
 
 if __name__ == "__main__":
     unittest.main()
