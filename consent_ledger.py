@@ -11,12 +11,18 @@ class ConsentLedger:
     events: list[str] = field(default_factory=list)
 
     def opt_in(self, preference: str) -> None:
-        self.preferences.add(preference)
-        self.events.append(f"opt_in:{preference}")
+        if not isinstance(preference, str) or not preference.strip():
+            raise ValueError("preference must be a non-empty string")
+        normalized = preference.strip().casefold()
+        self.preferences.add(normalized)
+        self.events.append(f"opt_in:{normalized}")
 
     def revoke(self, preference: str) -> None:
-        self.preferences.discard(preference)
-        self.events.append(f"revoke:{preference}")
+        if not isinstance(preference, str) or not preference.strip():
+            raise ValueError("preference must be a non-empty string")
+        normalized = preference.strip().casefold()
+        self.preferences.discard(normalized)
+        self.events.append(f"revoke:{normalized}")
 
     def snapshot(self) -> frozenset[str]:
         return frozenset(self.preferences)
