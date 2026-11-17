@@ -15,14 +15,14 @@ class ConsentLedger:
             raise ValueError("preference must be a non-empty string")
         normalized = preference.strip().casefold()
         self.preferences.add(normalized)
-        self.events.append(f"opt_in:{normalized}")
+        self.events.append("opt_in")  # Do not copy potentially sensitive preference text into the audit log.
 
     def revoke(self, preference: str) -> None:
         if not isinstance(preference, str) or not preference.strip():
             raise ValueError("preference must be a non-empty string")
         normalized = preference.strip().casefold()
         self.preferences.discard(normalized)
-        self.events.append(f"revoke:{normalized}")
+        self.events.append("revoke")  # Record the consent action without retaining the preference value.
 
     def snapshot(self) -> frozenset[str]:
         return frozenset(self.preferences)
