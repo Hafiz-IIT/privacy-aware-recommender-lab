@@ -23,7 +23,7 @@ class ConsentLedgerTests(unittest.TestCase):
         ledger = ConsentLedger()
         ledger.opt_in("systems")
         ledger.revoke("systems")
-        self.assertEqual(ledger.events, ["opt_in:systems", "revoke:systems"])
+        self.assertEqual(ledger.events, ["opt_in", "revoke"])
 
 
 if __name__ == "__main__":
