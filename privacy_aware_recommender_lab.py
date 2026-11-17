@@ -20,6 +20,7 @@ class Item:
             raise ValueError("item_id is required")
         if not isinstance(self.features, frozenset) or any(not isinstance(value, str) or not value.strip() for value in self.features):
             raise ValueError("features must be a frozenset of non-empty strings")
+        object.__setattr__(self, "features", frozenset(value.strip().casefold() for value in self.features))
         if not isinstance(self.cohort_support, int) or isinstance(self.cohort_support, bool) or self.cohort_support < 0:
             raise ValueError("cohort_support must be a non-negative integer")
 
@@ -38,14 +39,15 @@ def recommend(
     if any(not isinstance(value, str) or not value.strip() for value in opted_in_preferences):
         raise ValueError("opted-in preferences must be non-empty strings")
 
+    normalized_preferences = {value.strip().casefold() for value in opted_in_preferences}
     results: list[tuple[str, float]] = []
     for item in items:
         if item.cohort_support < min_cohort_support:
             continue
-        if not opted_in_preferences:
+        if not normalized_preferences:
             score = 0.0
         else:
-            score = len(item.features & opted_in_preferences) / len(opted_in_preferences)
+            score = len(item.features & normalized_preferences) / len(normalized_preferences)
         results.append((item.item_id, score))
 
     return sorted(results, key=lambda x: (-x[1], x[0]))[:top_k]
