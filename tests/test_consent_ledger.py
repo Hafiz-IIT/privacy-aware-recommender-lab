@@ -19,6 +19,11 @@ class ConsentLedgerTests(unittest.TestCase):
         after = recommend_with_consent(items, ledger)
         self.assertEqual(after, [("A", 0.0), ("B", 0.0)])
 
+    def test_empty_preference_is_rejected(self):
+        ledger = ConsentLedger()
+        with self.assertRaises(ValueError):
+            ledger.opt_in(" ")
+
     def test_events_record_consent_changes(self):
         ledger = ConsentLedger()
         ledger.opt_in("systems")
