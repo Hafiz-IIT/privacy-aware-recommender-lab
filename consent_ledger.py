@@ -10,6 +10,15 @@ class ConsentLedger:
     preferences: set[str] = field(default_factory=set)
     events: list[str] = field(default_factory=list)
 
+    def __post_init__(self):
+        if not isinstance(self.preferences, set) or any(
+            not isinstance(value, str) or not value.strip() for value in self.preferences
+        ):
+            raise ValueError("preferences must be a set of non-empty strings")
+        self.preferences = {value.strip().casefold() for value in self.preferences}
+        if not isinstance(self.events, list) or any(not isinstance(event, str) for event in self.events):
+            raise ValueError("events must be a list of strings")
+
     def opt_in(self, preference: str) -> None:
         if not isinstance(preference, str) or not preference.strip():
             raise ValueError("preference must be a non-empty string")
@@ -35,6 +44,8 @@ def recommend_with_consent(
     min_cohort_support: int = 5,
     top_k: int = 5,
 ) -> list[tuple[str, float]]:
+    if not isinstance(ledger, ConsentLedger):
+        raise TypeError("ledger must be a ConsentLedger")
     return recommend(
         items,
         opted_in_preferences=set(ledger.snapshot()),
