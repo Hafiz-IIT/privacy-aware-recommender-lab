@@ -36,8 +36,15 @@ def recommend(
         raise ValueError("min_cohort_support must be a positive integer")
     if not isinstance(top_k, int) or isinstance(top_k, bool) or top_k < 1:
         raise ValueError("top_k must be a positive integer")
+    if not isinstance(items, list) or any(not isinstance(item, Item) for item in items):
+        raise ValueError("items must be a list of Item values")
+    if not isinstance(opted_in_preferences, (set, frozenset)):
+        raise ValueError("opted_in_preferences must be a set of strings")
     if any(not isinstance(value, str) or not value.strip() for value in opted_in_preferences):
         raise ValueError("opted-in preferences must be non-empty strings")
+    item_ids = [item.item_id for item in items]
+    if len(item_ids) != len(set(item_ids)):
+        raise ValueError("item IDs must be unique")
 
     normalized_preferences = {value.strip().casefold() for value in opted_in_preferences}
     results: list[tuple[str, float]] = []
