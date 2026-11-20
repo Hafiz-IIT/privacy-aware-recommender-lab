@@ -19,11 +19,19 @@ class ConsentLedgerTests(unittest.TestCase):
         after = recommend_with_consent(items, ledger)
         self.assertEqual(after, [("A", 0.0), ("B", 0.0)])
 
+    def test_initial_preferences_are_normalized(self):
+        ledger = ConsentLedger(preferences={" AI "})
+        self.assertEqual(ledger.snapshot(), frozenset({"ai"}))
+
+    def test_invalid_initial_preference_rejected(self):
+        with self.assertRaises(ValueError):
+            ConsentLedger(preferences={""})
+
     def test_events_record_consent_changes(self):
         ledger = ConsentLedger()
         ledger.opt_in("systems")
         ledger.revoke("systems")
-        self.assertEqual(ledger.events, ["opt_in:systems", "revoke:systems"])
+        self.assertEqual(ledger.events, ["opt_in", "revoke"])
 
 
 if __name__ == "__main__":
