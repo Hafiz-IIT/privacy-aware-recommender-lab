@@ -32,7 +32,7 @@ def recommend(
     min_cohort_support: int = 5,
     top_k: int = 5,
 ) -> list[tuple[str, float]]:
-    if not isinstance(min_cohort_support, int) or isinstance(min_cohort_support, bool) or min_cohort_support < 1:
+    if not isinstance(min_cohort_support, int) or isinstance(min_cohort_support, bool) or min_cohort_support < 2:
         raise ValueError("min_cohort_support must be an integer >= 2")
     if not isinstance(top_k, int) or isinstance(top_k, bool) or top_k < 1:
         raise ValueError("top_k must be a positive integer")
